@@ -63,9 +63,11 @@ export async function GymsContent({
     <div className="container mx-auto p-6 max-w-7xl">
       {!user && <DemoBanner />}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Browse Gyms</h1>
+        <h1 className="text-3xl font-bold">Browse Gym Spaces for Hourly Booking</h1>
         <p className="text-muted-foreground mt-2">
-          Find gyms and spaces available for booking
+          Find gym spaces available for hourly booking across the UK. Perfect for personal trainers who need
+          flexible access to quality training facilities. Browse by location, equipment type, and amenities.
+          Book spaces by the hour for your client sessions without long-term contracts.
         </p>
       </div>
 

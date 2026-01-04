@@ -172,6 +172,27 @@ WHERE email = 'your-email@example.com';
 - RLS policies prevent non-admins from accessing disabled users or modifying roles
 - Self-protection: Admins cannot disable/delete their own account from the UI
 
+## SEO & Landing Pages
+
+The platform includes optimized landing pages for SEO and conversions:
+
+- **Homepage** (`/`): Hero, How It Works, Benefits, Categories, FAQ, CTAs
+- **Find Coaches** (`/coaches`): Browse trainers with SEO-rich intro
+- **Browse Gyms** (`/gyms`): Find spaces with SEO-rich intro
+- **Gym Owners** (`/gym-owners`): Marketing page for listing gyms
+- **How It Works** (`/how-it-works`): Explains platform for all roles
+- **Pricing** (`/pricing`): Token system and pricing transparency
+
+### SEO Features
+- Metadata with OpenGraph on all pages
+- JSON-LD structured data (Organization, WebSite, FAQPage)
+- Sitemap at `/sitemap.xml`
+- Robots.txt at `/robots.txt`
+- UK-focused copy and keywords
+- Semantic HTML with proper heading hierarchy
+
+See `/docs/SEO_UPGRADE.md` for full details.
+
 ## Testing the MVP
 
 1. **Browse without login:**

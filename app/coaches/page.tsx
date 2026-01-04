@@ -1,5 +1,20 @@
 import { Suspense } from "react";
 import { CoachesContent } from "@/components/coaches-content";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Find Personal Trainers in the UK - Qualified Coaches on 1on1",
+  description: "Browse verified personal trainers across the UK. Filter by specialty (boxing, strength training, weight loss), location, and availability. Book 1-to-1 sessions with qualified coaches.",
+  alternates: {
+    canonical: "https://1on1.fitness/coaches",
+  },
+  openGraph: {
+    title: "Find Personal Trainers in the UK - Qualified Coaches on 1on1",
+    description: "Browse verified personal trainers across the UK. Filter by specialty, location, and availability.",
+    type: "website",
+    locale: "en_GB",
+  },
+};
 
 export default async function CoachesPage({
   searchParams,

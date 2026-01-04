@@ -61,9 +61,11 @@ export async function CoachesContent({
     <div className="container mx-auto p-6 max-w-7xl">
       {!user && <DemoBanner />}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Find a Coach</h1>
+        <h1 className="text-3xl font-bold">Find a Personal Trainer in the UK</h1>
         <p className="text-muted-foreground mt-2">
-          Browse verified coaches and book 1-to-1 sessions
+          Browse qualified personal trainers across the UK. All coaches on 1on1 are verified with qualifications,
+          insurance, and experience. Filter by specialty (boxing, strength training, weight loss, yoga), location,
+          and availability. Request 1-to-1 sessions directly with coaches who match your fitness goals.
         </p>
       </div>
 

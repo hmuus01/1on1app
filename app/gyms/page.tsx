@@ -1,5 +1,20 @@
 import { Suspense } from "react";
 import { GymsContent } from "@/components/gyms-content";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Browse Gym Spaces in the UK - Book by the Hour on 1on1",
+  description: "Find gym spaces available for hourly booking across the UK. Perfect for personal trainers. Browse by location, equipment, and amenities. Book spaces for your client sessions.",
+  alternates: {
+    canonical: "https://1on1.fitness/gyms",
+  },
+  openGraph: {
+    title: "Browse Gym Spaces in the UK - Book by the Hour on 1on1",
+    description: "Find gym spaces available for hourly booking across the UK. Perfect for personal trainers.",
+    type: "website",
+    locale: "en_GB",
+  },
+};
 
 export default async function GymsPage({
   searchParams,

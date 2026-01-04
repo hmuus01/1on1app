@@ -3,7 +3,9 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
+import { NavigationSkeleton } from "@/components/navigation-skeleton";
 import { Footer } from "@/components/footer";
+import { Suspense } from "react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -35,7 +37,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navigation />
+          <Suspense fallback={<NavigationSkeleton />}>
+            <Navigation />
+          </Suspense>
           {children}
           <Footer />
         </ThemeProvider>

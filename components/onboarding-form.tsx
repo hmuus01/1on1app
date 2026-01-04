@@ -85,6 +85,7 @@ export function OnboardingForm({ preselectedRole }: { preselectedRole?: "client"
       });
 
       router.push("/dashboard/client");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -121,6 +122,7 @@ export function OnboardingForm({ preselectedRole }: { preselectedRole?: "client"
       if (!coachResult.success) throw new Error(coachResult.error);
 
       router.push("/dashboard/coach");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -156,6 +158,7 @@ export function OnboardingForm({ preselectedRole }: { preselectedRole?: "client"
       if (!gymResult.success) throw new Error(gymResult.error);
 
       router.push("/dashboard/gym-owner");
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {

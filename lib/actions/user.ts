@@ -13,11 +13,49 @@ export async function getUserProfile() {
     .from("user_profiles")
     .select("*")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    console.error("Error fetching user profile:", error);
+    // Check for schema cache error
+    if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
+      console.error("Schema cache error - run: NOTIFY pgrst, 'reload schema';");
+      throw new Error("Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor.");
+    }
+    // Only log unexpected errors
+    console.error("Unexpected error fetching user profile:", error.message || error);
     return null;
+  }
+
+  // If profile doesn't exist, bootstrap it with upsert
+  if (!data) {
+    const { data: newProfile, error: upsertError } = await supabase
+      .from("user_profiles")
+      .upsert({
+        id: user.id,
+        email: user.email,
+        role: null,
+        disabled: false,
+        created_at: new Date().toISOString(),
+      }, {
+        onConflict: 'id',
+        ignoreDuplicates: false,
+      })
+      .select()
+      .maybeSingle();
+
+    if (upsertError) {
+      // Silent fail on upsert - trigger should have created it
+      console.warn("Could not bootstrap profile, but trigger may have created it:", upsertError.message);
+      // Try fetching again
+      const { data: refetchedProfile } = await supabase
+        .from("user_profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+      return refetchedProfile;
+    }
+
+    return newProfile;
   }
 
   return data;
@@ -43,6 +81,13 @@ export async function updateUserProfile(data: {
     .eq("id", user.id);
 
   if (error) {
+    // Check for schema cache error
+    if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
     return { success: false, error: error.message };
   }
 
@@ -63,6 +108,13 @@ export async function updateUserRole(role: "client" | "coach" | "gym_owner" | "a
     .eq("id", user.id);
 
   if (error) {
+    // Check for schema cache error
+    if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
     return { success: false, error: error.message };
   }
 
@@ -86,13 +138,28 @@ export async function createCoachProfile(data: {
   }
 
   // Get user profile to check role
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("id, role")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
-  if (!profile || profile.role !== "coach") {
+  if (profileError) {
+    // Check for schema cache error
+    if (profileError.message?.includes("schema cache") || profileError.message?.includes("not found") || profileError.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
+    return { success: false, error: profileError.message || "Failed to fetch profile" };
+  }
+
+  if (!profile) {
+    return { success: false, error: "User profile not found. Please complete onboarding first." };
+  }
+
+  if (profile.role !== "coach") {
     return { success: false, error: "User is not a coach" };
   }
 
@@ -104,6 +171,13 @@ export async function createCoachProfile(data: {
     });
 
   if (error) {
+    // Check for schema cache error
+    if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
     return { success: false, error: error.message };
   }
 
@@ -128,13 +202,28 @@ export async function createGymProfile(data: {
   }
 
   // Get user profile to check role
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from("user_profiles")
     .select("id, role")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
-  if (!profile || profile.role !== "gym_owner") {
+  if (profileError) {
+    // Check for schema cache error
+    if (profileError.message?.includes("schema cache") || profileError.message?.includes("not found") || profileError.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
+    return { success: false, error: profileError.message || "Failed to fetch profile" };
+  }
+
+  if (!profile) {
+    return { success: false, error: "User profile not found. Please complete onboarding first." };
+  }
+
+  if (profile.role !== "gym_owner") {
     return { success: false, error: "User is not a gym owner" };
   }
 
@@ -146,6 +235,13 @@ export async function createGymProfile(data: {
     });
 
   if (error) {
+    // Check for schema cache error
+    if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
+      return { 
+        success: false, 
+        error: "Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor and try again." 
+      };
+    }
     return { success: false, error: error.message };
   }
 

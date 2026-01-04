@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { VerificationManager } from "@/components/verification-manager";
+import Link from "next/link";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -52,11 +53,16 @@ export default async function AdminPage() {
 
   return (
     <div className="container mx-auto p-6 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground mt-2">
-          Manage users and verifications
-        </p>
+      <div className="mb-8 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground mt-2">
+            Manage users and verifications
+          </p>
+        </div>
+        <Button asChild>
+          <Link href="/admin/users">User Management</Link>
+        </Button>
       </div>
 
       <div className="grid gap-6">

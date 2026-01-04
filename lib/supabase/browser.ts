@@ -1,5 +1,9 @@
 import { createBrowserClient } from "@supabase/ssr";
 
+/**
+ * Browser client for client components
+ * Use this in "use client" components only
+ */
 export function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseKey =
@@ -12,3 +16,4 @@ export function createClient() {
 
   return createBrowserClient(supabaseUrl, supabaseKey);
 }
+

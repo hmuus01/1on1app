@@ -43,14 +43,24 @@ export async function Navigation() {
               </Link>
             )}
             {user && profile?.role === "admin" && (
-              <Link href="/admin" className="text-sm hover:underline">
-                Admin
-              </Link>
+              <>
+                <Link href="/admin" className="text-sm hover:underline">
+                  Admin
+                </Link>
+                <Link href="/admin/users" className="text-sm hover:underline">
+                  Users
+                </Link>
+              </>
             )}
             {user && (
-              <Link href="/messages" className="text-sm hover:underline">
-                Messages
-              </Link>
+              <>
+                <Link href="/messages" className="text-sm hover:underline">
+                  Messages
+                </Link>
+                <Link href="/account" className="text-sm hover:underline">
+                  Account
+                </Link>
+              </>
             )}
           </div>
         </div>

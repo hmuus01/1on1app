@@ -225,7 +225,7 @@ export function OnboardingForm({ preselectedRole }: { preselectedRole?: "client"
         <CardDescription>Complete your profile to get started</CardDescription>
       </CardHeader>
       <CardContent>
-        {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
+        {error && <p className="text-sm text-red-500 mb-4" role="alert">{error}</p>}
 
         {selectedRole === "client" && (
           <form onSubmit={handleClientSubmit} className="space-y-4">

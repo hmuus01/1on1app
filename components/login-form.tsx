@@ -34,7 +34,7 @@ export function LoginForm({
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim(),
         password,
       });
       if (error) throw error;
@@ -67,6 +67,7 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  maxLength={255}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -85,11 +86,12 @@ export function LoginForm({
                   id="password"
                   type="password"
                   required
+                  maxLength={128}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>

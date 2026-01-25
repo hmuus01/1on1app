@@ -3,8 +3,10 @@ import { getUserProfile } from "@/lib/actions/user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function NewGymPage() {
+  noStore();
   const profile = await getUserProfile();
 
   // If not logged in, redirect to signup

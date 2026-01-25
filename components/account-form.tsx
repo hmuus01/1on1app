@@ -166,7 +166,7 @@ export function AccountForm({ user, profile }: AccountFormProps) {
                 placeholder="SW1A 1AA"
               />
             </div>
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
             {success && <p className="text-sm text-green-500">Profile updated successfully!</p>}
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Saving..." : "Update Profile"}
@@ -207,7 +207,7 @@ export function AccountForm({ user, profile }: AccountFormProps) {
                 required
               />
             </div>
-            {passwordError && <p className="text-sm text-red-500">{passwordError}</p>}
+            {passwordError && <p className="text-sm text-red-500" role="alert">{passwordError}</p>}
             {passwordSuccess && <p className="text-sm text-green-500">Password changed successfully!</p>}
             <Button type="submit" disabled={isChangingPassword}>
               {isChangingPassword ? "Changing..." : "Change Password"}

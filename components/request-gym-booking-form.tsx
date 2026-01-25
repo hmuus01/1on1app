@@ -119,7 +119,7 @@ export function RequestGymBookingForm({ spaceId }: { spaceId: string }) {
           />
         </div>
       </div>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
       <Button type="submit" disabled={isLoading} size="sm" className="w-full">
         {isLoading ? "Requesting..." : "Request Booking"}
       </Button>

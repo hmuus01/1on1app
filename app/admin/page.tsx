@@ -29,8 +29,6 @@ export default async function AdminPage() {
     redirect("/dashboard/" + profile.role);
   }
 
-  const supabase = await createClient();
-  
   // Fetch all users
   const { data: users } = await supabase
     .from("user_profiles")

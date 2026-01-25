@@ -139,7 +139,7 @@ export function RequestSessionForm({ coachUserId }: { coachUserId: string }) {
           placeholder="Any additional information..."
         />
       </div>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
       <Button type="submit" disabled={isLoading} className="w-full">
         {isLoading ? "Sending Request..." : "Request Session"}
       </Button>

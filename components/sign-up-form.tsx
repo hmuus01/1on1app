@@ -32,6 +32,12 @@ export function SignUpForm({
     setIsLoading(true);
     setError(null);
 
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      setIsLoading(false);
+      return;
+    }
+
     if (password !== repeatPassword) {
       setError("Passwords do not match");
       setIsLoading(false);
@@ -40,7 +46,7 @@ export function SignUpForm({
 
     try {
       const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
+        email: email.trim(),
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/confirm`,
@@ -74,6 +80,7 @@ export function SignUpForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  maxLength={255}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -86,6 +93,7 @@ export function SignUpForm({
                   id="password"
                   type="password"
                   required
+                  maxLength={128}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -98,11 +106,12 @@ export function SignUpForm({
                   id="repeat-password"
                   type="password"
                   required
+                  maxLength={128}
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Creating an account..." : "Sign up"}
               </Button>

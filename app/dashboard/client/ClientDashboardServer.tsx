@@ -4,6 +4,7 @@ import { getUserProfile } from "@/lib/actions/user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { CoachSessionRequestWithCoach } from "@/types/database";
 
 export async function ClientDashboardServer() {
   const supabase = await createClient();
@@ -69,7 +70,7 @@ export async function ClientDashboardServer() {
           <CardContent>
             {sessionRequests && sessionRequests.length > 0 ? (
               <div className="space-y-4">
-                {sessionRequests.map((request: any) => (
+                {sessionRequests.map((request: CoachSessionRequestWithCoach) => (
                   <div
                     key={request.id}
                     className="border rounded-lg p-4 flex items-center justify-between"

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { RequestGymBookingForm } from "@/components/request-gym-booking-form";
 import { getUserProfile } from "@/lib/actions/user";
+import type { GymSpace, AvailabilityRule } from "@/types/database";
 
 export default async function GymDetailPage({
   params,
@@ -123,7 +124,7 @@ export default async function GymDetailPage({
           <CardContent>
             {spaces && spaces.length > 0 ? (
               <div className="space-y-4">
-                {spaces.map((space: any) => (
+                {spaces.map((space: GymSpace) => (
                   <div
                     key={space.id}
                     className="border rounded-lg p-4"
@@ -180,7 +181,7 @@ export default async function GymDetailPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {availabilityRules.map((rule: any) => (
+                {availabilityRules.map((rule: AvailabilityRule) => (
                   <div key={rule.id} className="flex items-center justify-between">
                     <span className="font-medium">
                       {days[rule.day_of_week]}

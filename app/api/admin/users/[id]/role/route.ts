@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   request: NextRequest,
@@ -45,7 +46,7 @@ export async function POST(
       .single();
 
     if (error) {
-      console.error("Error updating user role:", error);
+      logger.error("Error updating user role:", error);
       return NextResponse.json(
         { error: "Failed to update role" },
         { status: 500 }
@@ -54,7 +55,7 @@ export async function POST(
 
     return NextResponse.json({ user: data });
   } catch (error) {
-    console.error("Admin role update error:", error);
+    logger.error("Admin role update error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

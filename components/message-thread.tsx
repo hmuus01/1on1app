@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
+import { logger } from "@/lib/logger";
+import type { MessageWithUsers } from "@/types/database";
 
 export function MessageThread({
   threadId,
@@ -12,9 +14,9 @@ export function MessageThread({
 }: {
   threadId: string;
   otherUserId: string;
-  initialMessages: any[];
+  initialMessages: MessageWithUsers[];
 }) {
-  const [messages, setMessages] = useState(initialMessages || []);
+  const [messages, setMessages] = useState<MessageWithUsers[]>(initialMessages || []);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,7 +47,7 @@ export function MessageThread({
       setMessages([data, ...messages]);
       setNewMessage("");
     } catch (err) {
-      console.error("Error sending message:", err);
+      logger.error("Error sending message:", err);
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +58,7 @@ export function MessageThread({
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {messages
           .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-          .map((msg: any) => (
+          .map((msg) => (
             <div
               key={msg.id}
               className={`p-3 rounded-lg ${

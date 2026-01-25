@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { CoachesFilters } from "@/components/coaches-filters";
 import { DemoBanner } from "@/components/demo-banner";
+import type { CoachProfileWithUser } from "@/types/database";
 
 export async function CoachesContent({
   searchParams,
@@ -45,15 +46,15 @@ export async function CoachesContent({
   const { data: coaches } = await query;
 
   // Filter by tokens if provided
-  let filteredCoaches = coaches || [];
+  let filteredCoaches: CoachProfileWithUser[] = coaches || [];
   if (tokensMin) {
     filteredCoaches = filteredCoaches.filter(
-      (c: any) => c.tokens_per_hour >= parseInt(tokensMin)
+      (c) => (c.tokens_per_hour ?? 0) >= parseInt(tokensMin)
     );
   }
   if (tokensMax) {
     filteredCoaches = filteredCoaches.filter(
-      (c: any) => c.tokens_per_hour <= parseInt(tokensMax)
+      (c) => (c.tokens_per_hour ?? 0) <= parseInt(tokensMax)
     );
   }
 
@@ -73,7 +74,7 @@ export async function CoachesContent({
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {filteredCoaches.length > 0 ? (
-          filteredCoaches.map((coach: any) => (
+          filteredCoaches.map((coach) => (
             <Card key={coach.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">

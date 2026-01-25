@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
+import { logger } from "@/lib/logger";
+import type { CoachProfileWithUser } from "@/types/database";
 
-export function VerificationManager({ coaches }: { coaches: any[] }) {
+export function VerificationManager({ coaches }: { coaches: CoachProfileWithUser[] }) {
   const [updating, setUpdating] = useState<string | null>(null);
 
   const updateVerification = async (
@@ -27,7 +29,7 @@ export function VerificationManager({ coaches }: { coaches: any[] }) {
       // Refresh page
       window.location.reload();
     } catch (err) {
-      console.error("Error updating verification:", err);
+      logger.error("Error updating verification:", err);
       alert("Failed to update verification status");
     } finally {
       setUpdating(null);
@@ -44,7 +46,7 @@ export function VerificationManager({ coaches }: { coaches: any[] }) {
 
   return (
     <div className="space-y-4">
-      {coaches.map((coach: any) => (
+      {coaches.map((coach) => (
         <div
           key={coach.id}
           className="border rounded-lg p-4 space-y-3"

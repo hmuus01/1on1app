@@ -4,6 +4,7 @@ import { getUserProfile } from "@/lib/actions/user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { CoachSessionRequestWithClient, GymBookingRequestWithSpace } from "@/types/database";
 
 export async function CoachDashboardServer() {
   const supabase = await createClient();
@@ -87,7 +88,7 @@ export async function CoachDashboardServer() {
           <CardContent>
             {sessionRequests && sessionRequests.length > 0 ? (
               <div className="space-y-4">
-                {sessionRequests.map((request: any) => (
+                {sessionRequests.map((request: CoachSessionRequestWithClient) => (
                   <div
                     key={request.id}
                     className="border rounded-lg p-4 flex items-center justify-between"
@@ -128,7 +129,7 @@ export async function CoachDashboardServer() {
           <CardContent>
             {gymBookings && gymBookings.length > 0 ? (
               <div className="space-y-4">
-                {gymBookings.map((booking: any) => (
+                {gymBookings.map((booking: GymBookingRequestWithSpace) => (
                   <div
                     key={booking.id}
                     className="border rounded-lg p-4 flex items-center justify-between"

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RequestSessionForm } from "@/components/request-session-form";
 import { getUserProfile } from "@/lib/actions/user";
+import type { AvailabilityRule } from "@/types/database";
 
 export default async function CoachDetailPage({
   params,
@@ -148,7 +149,7 @@ export default async function CoachDetailPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {availabilityRules.map((rule: any) => (
+                {availabilityRules.map((rule: AvailabilityRule) => (
                   <div key={rule.id} className="flex items-center justify-between">
                     <span className="font-medium">
                       {days[rule.day_of_week]}

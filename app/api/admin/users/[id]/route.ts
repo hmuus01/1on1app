@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logger } from "@/lib/logger";
 
 export async function DELETE(
   request: NextRequest,
@@ -35,7 +36,7 @@ export async function DELETE(
       .eq("id", id);
 
     if (error) {
-      console.error("Error deleting user:", error);
+      logger.error("Error deleting user:", error);
       return NextResponse.json(
         { error: "Failed to delete user" },
         { status: 500 }
@@ -46,13 +47,13 @@ export async function DELETE(
     const { error: authError } = await adminClient.auth.admin.deleteUser(id);
 
     if (authError) {
-      console.error("Error deleting auth user:", authError);
+      logger.error("Error deleting auth user:", authError);
       // Continue even if auth deletion fails - profile is already deleted
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Admin delete error:", error);
+    logger.error("Admin delete error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

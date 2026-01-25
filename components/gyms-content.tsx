@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { GymsFilters } from "@/components/gyms-filters";
 import { DemoBanner } from "@/components/demo-banner";
+import type { GymProfileWithSpaces } from "@/types/database";
 
 export async function GymsContent({
   searchParams,
@@ -36,7 +37,7 @@ export async function GymsContent({
   const { data: gyms } = await query;
 
   // Get spaces for each gym to check tokens
-  let gymsWithSpaces = [];
+  const gymsWithSpaces: GymProfileWithSpaces[] = [];
   for (const gym of gyms || []) {
     const { data: spaces } = await supabase
       .from("gym_spaces")
@@ -75,7 +76,7 @@ export async function GymsContent({
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {gymsWithSpaces.length > 0 ? (
-          gymsWithSpaces.map((gym: any) => (
+          gymsWithSpaces.map((gym) => (
             <Card key={gym.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">

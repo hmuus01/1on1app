@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { logger } from "@/lib/logger";
 
 export async function getUserProfile() {
   const supabase = await createClient();
@@ -18,11 +19,11 @@ export async function getUserProfile() {
   if (error) {
     // Check for schema cache error
     if (error.message?.includes("schema cache") || error.message?.includes("not found") || error.code === "PGRST301") {
-      console.error("Schema cache error - run: NOTIFY pgrst, 'reload schema';");
+      logger.error("Schema cache error - run: NOTIFY pgrst, 'reload schema';");
       throw new Error("Schema cache error. Please run 'NOTIFY pgrst, 'reload schema';' in Supabase SQL Editor.");
     }
     // Only log unexpected errors
-    console.error("Unexpected error fetching user profile:", error.message || error);
+    logger.error("Unexpected error fetching user profile:", error.message || error);
     return null;
   }
 
@@ -45,7 +46,7 @@ export async function getUserProfile() {
 
     if (upsertError) {
       // Silent fail on upsert - trigger should have created it
-      console.warn("Could not bootstrap profile, but trigger may have created it:", upsertError.message);
+      logger.warn("Could not bootstrap profile, but trigger may have created it:", upsertError.message);
       // Try fetching again
       const { data: refetchedProfile } = await supabase
         .from("user_profiles")

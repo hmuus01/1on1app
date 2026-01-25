@@ -4,6 +4,7 @@ import { getUserProfile } from "@/lib/actions/user";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import type { GymBookingRequestWithRelations } from "@/types/database";
 
 export async function GymOwnerDashboardServer() {
   const supabase = await createClient();
@@ -35,7 +36,7 @@ export async function GymOwnerDashboardServer() {
     .order("created_at", { ascending: false });
 
   // Fetch booking requests for all spaces in owned gyms
-  let allBookingRequests: any[] = [];
+  let allBookingRequests: GymBookingRequestWithRelations[] = [];
   const gymIds = gyms?.map(g => g.id) || [];
   
   if (gymIds.length > 0) {
@@ -131,7 +132,7 @@ export async function GymOwnerDashboardServer() {
           <CardContent>
             {allBookingRequests.length > 0 ? (
               <div className="space-y-4">
-                {allBookingRequests.map((booking: any) => (
+                {allBookingRequests.map((booking: GymBookingRequestWithRelations) => (
                   <div
                     key={booking.id}
                     className="border rounded-lg p-4 flex items-center justify-between"

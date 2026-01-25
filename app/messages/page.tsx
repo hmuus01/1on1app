@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageThread } from "@/components/message-thread";
+import type { MessageWithUsers, MessageThread as MessageThreadType } from "@/types/database";
 
 export default async function MessagesPage() {
   const profile = await getUserProfile();
@@ -35,8 +36,8 @@ export default async function MessagesPage() {
     .limit(50);
 
   // Group messages by thread_id
-  const threads = new Map();
-  messages?.forEach((msg: any) => {
+  const threads = new Map<string, MessageThreadType>();
+  messages?.forEach((msg: MessageWithUsers) => {
     const threadId = msg.thread_id;
     if (!threads.has(threadId)) {
       threads.set(threadId, {
@@ -45,7 +46,10 @@ export default async function MessagesPage() {
         other_user: msg.from_user_id === profile.id ? msg.to_user : msg.from_user,
       });
     }
-    threads.get(threadId).messages.push(msg);
+    const thread = threads.get(threadId);
+    if (thread) {
+      thread.messages.push(msg);
+    }
   });
 
   const threadArray = Array.from(threads.values());
@@ -61,7 +65,7 @@ export default async function MessagesPage() {
 
       <div className="grid gap-6">
         {threadArray.length > 0 ? (
-          threadArray.map((thread: any) => (
+          threadArray.map((thread: MessageThreadType) => (
             <Card key={thread.thread_id}>
               <CardHeader>
                 <CardTitle>
@@ -71,7 +75,7 @@ export default async function MessagesPage() {
               <CardContent>
                 <MessageThread
                   threadId={thread.thread_id}
-                  otherUserId={thread.other_user?.id}
+                  otherUserId={thread.other_user?.id || ""}
                   initialMessages={thread.messages}
                 />
               </CardContent>

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { VerificationManager } from "@/components/verification-manager";
 import Link from "next/link";
+import type { UserProfile } from "@/types/database";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -74,7 +75,7 @@ export default async function AdminPage() {
           <CardContent>
             {users && users.length > 0 ? (
               <div className="space-y-2">
-                {users.map((user: any) => (
+                {users.map((user: UserProfile) => (
                   <div
                     key={user.id}
                     className="border rounded-lg p-4 flex items-center justify-between"

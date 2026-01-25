@@ -19,15 +19,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical, Search, Trash2, UserX, UserCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { logger } from "@/lib/logger";
+import type { AdminUser } from "@/types/database";
 
-interface User {
-  id: string;
-  email: string;
-  created_at: string;
-  role: string | null;
-  disabled: boolean;
-  disabled_reason: string | null;
-}
+type User = AdminUser;
 
 export function AdminUsersTable() {
   const [users, setUsers] = useState<User[]>([]);
@@ -67,7 +62,7 @@ export function AdminUsersTable() {
       const data = await response.json();
       setUsers(data.users || []);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      logger.error("Error fetching users:", error);
     } finally {
       setLoading(false);
     }
@@ -96,7 +91,7 @@ export function AdminUsersTable() {
 
       fetchUsers();
     } catch (error) {
-      console.error("Error updating role:", error);
+      logger.error("Error updating role:", error);
       alert("Failed to update role");
     }
   };
@@ -139,7 +134,7 @@ export function AdminUsersTable() {
       setDisableReason("");
       fetchUsers();
     } catch (error) {
-      console.error("Error updating user:", error);
+      logger.error("Error updating user:", error);
       alert("Failed to update user");
     }
   };
@@ -172,7 +167,7 @@ export function AdminUsersTable() {
       setUserToDelete(null);
       fetchUsers();
     } catch (error) {
-      console.error("Error deleting user:", error);
+      logger.error("Error deleting user:", error);
       alert("Failed to delete user");
     }
   };

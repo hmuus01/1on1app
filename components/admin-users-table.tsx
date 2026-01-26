@@ -20,6 +20,7 @@ import {
 import { MoreVertical, Search, Trash2, UserX, UserCheck } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { logger } from "@/lib/logger";
+import { toast } from "sonner";
 import type { AdminUser } from "@/types/database";
 
 type User = AdminUser;
@@ -85,20 +86,20 @@ export function AdminUsersTable() {
 
       if (!response.ok) {
         const error = await response.json();
-        alert(error.error || "Failed to update role");
+        toast.error(error.error || "Failed to update role");
         return;
       }
 
       fetchUsers();
     } catch (error) {
       logger.error("Error updating role:", error);
-      alert("Failed to update role");
+      toast.error("Failed to update role");
     }
   };
 
   const handleDisableToggle = async (user: User) => {
     if (user.id === currentUserId) {
-      alert("Cannot disable your own account");
+      toast.error("Cannot disable your own account");
       return;
     }
 
@@ -125,7 +126,7 @@ export function AdminUsersTable() {
 
       if (!response.ok) {
         const error = await response.json();
-        alert(error.error || "Failed to update user");
+        toast.error(error.error || "Failed to update user");
         return;
       }
 
@@ -135,13 +136,13 @@ export function AdminUsersTable() {
       fetchUsers();
     } catch (error) {
       logger.error("Error updating user:", error);
-      alert("Failed to update user");
+      toast.error("Failed to update user");
     }
   };
 
   const handleDelete = async (user: User) => {
     if (user.id === currentUserId) {
-      alert("Cannot delete your own account");
+      toast.error("Cannot delete your own account");
       return;
     }
 
@@ -159,7 +160,7 @@ export function AdminUsersTable() {
 
       if (!response.ok) {
         const error = await response.json();
-        alert(error.error || "Failed to delete user");
+        toast.error(error.error || "Failed to delete user");
         return;
       }
 
@@ -168,7 +169,7 @@ export function AdminUsersTable() {
       fetchUsers();
     } catch (error) {
       logger.error("Error deleting user:", error);
-      alert("Failed to delete user");
+      toast.error("Failed to delete user");
     }
   };
 

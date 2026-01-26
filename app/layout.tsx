@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Navigation } from "@/components/navigation";
 import { NavigationSkeleton } from "@/components/navigation-skeleton";
@@ -42,6 +43,7 @@ export default function RootLayout({
           </Suspense>
           {children}
           <Footer />
+          <Toaster position="top-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>

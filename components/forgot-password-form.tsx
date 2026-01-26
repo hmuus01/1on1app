@@ -13,7 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { rateLimit, authRateLimits, formatResetTime } from "@/lib/rate-limit";
 
 export function ForgotPasswordForm({
   className,
@@ -23,9 +24,18 @@ export function ForgotPasswordForm({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const rateLimitKey = useRef(`reset-${Date.now()}`);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Rate limiting
+    const result = rateLimit(rateLimitKey.current, authRateLimits.passwordReset);
+    if (!result.success) {
+      setError(`Too many reset attempts. Please try again in ${formatResetTime(result.resetIn)}.`);
+      return;
+    }
+
     const supabase = createClient();
     setIsLoading(true);
     setError(null);

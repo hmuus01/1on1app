@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { createClient } from "@/lib/supabase/client";
 import { logger } from "@/lib/logger";
+import { toast } from "sonner";
 import type { CoachProfileWithUser } from "@/types/database";
 
 export function VerificationManager({ coaches }: { coaches: CoachProfileWithUser[] }) {
@@ -30,7 +31,7 @@ export function VerificationManager({ coaches }: { coaches: CoachProfileWithUser
       window.location.reload();
     } catch (err) {
       logger.error("Error updating verification:", err);
-      alert("Failed to update verification status");
+      toast.error("Failed to update verification status");
     } finally {
       setUpdating(null);
     }

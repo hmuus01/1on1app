@@ -14,7 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { rateLimit, authRateLimits, formatResetTime } from "@/lib/rate-limit";
 export function SignUpForm({
   className,
   ...props
@@ -25,9 +26,18 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const rateLimitKey = useRef(`signup-${Date.now()}`);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Rate limiting
+    const result = rateLimit(rateLimitKey.current, authRateLimits.signup);
+    if (!result.success) {
+      setError(`Too many signup attempts. Please try again in ${formatResetTime(result.resetIn)}.`);
+      return;
+    }
+
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
